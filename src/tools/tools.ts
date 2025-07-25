@@ -88,75 +88,71 @@ const tavilyTool = tool(tracedTavilytool, {
 
 */
 
-// Define the traced function for the addition tool
-const tracedAdditionTool = traceable(
-  async({ a, b }: { a: number; b: number }) => {
-  return (a + b).toString();
-},
-
-{
-  run_type: "tool",
-  name : "additionTool"
-}
+const tracedAdditionFunction = traceable(
+  async ({ a, b }: { a: number; b: number }) => {
+    return (a + b).toString();
+  },
+  { name: "additionTool" }
 );
 
-const additionTool = tool(tracedAdditionTool, {
-  name: "additionTool",
-  description: "Adds two numbers together.",
-  schema: z.object({
-    a: z.number().describe("The first number to add."),
-    b: z.number().describe("The second number to add."),
-  }),
-});
+const additionTool = tool(
+  tracedAdditionFunction,
+  {
+    name: "additionTool",
+    description: "Adds two numbers together.",
+    schema: z.object({
+      a: z.number().describe("The first number to add."),
+      b: z.number().describe("The second number to add."),
+    }),
+  }
+);
 
 
-// Define the traced function for the random number generator tool
-const tracedRandomNumberTool = traceable(
-    async ({ min, max }: { min: number; max: number }) => {
-      if (min > max) {
-        throw new Error("Invalid range: min must be less than or equal to max.");
-      }
-      const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-      return randomNumber.toString();
-    },
-    {
-      run_type: "tool",
-      name: "randomNumberTool"
+const tracedRandomNumberFunction = traceable(
+  async ({ min, max }: { min: number; max: number }) => {
+    if (min > max) {
+      throw new Error("Invalid range: min must be less than or equal to max.");
     }
-);
-const randomNumberTool = tool(tracedRandomNumberTool, {
-  name: "randomNumberTool",
-  description: "Generates a random number between the specified min and max values.",
-  schema: z.object({
-    min: z.number().describe("The minimum value (inclusive)."),
-    max: z.number().describe("The maximum value (inclusive)."),
-  }),
-});
-
-
-
-
-// Define the traced function for the current time tool
-const tracedCurrentTimeTool = traceable(
-async () => {
-  const now = new Date();
-  const hh = now.getHours().toString().padStart(2, '0');
-  const mm = now.getMinutes().toString().padStart(2, '0');
-  const ss = now.getSeconds().toString().padStart(2, '0');
-  return `${hh}:${mm}:${ss}`;
-},
-{
-  run_type: "tool",
-  name: "currentTime"
-}
+    const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+    return randomNumber.toString();
+  },
+  { name: "randomNumberTool" }
 );
 
-const currentTimeTool  = tool(tracedCurrentTimeTool, {
-  name: "currentTime",
-  description: "Returns the current local time in HH:MM:SS format.",
-  schema: z.object({}),
+const randomNumberTool = tool(
+  tracedRandomNumberFunction,
+  {
+    name: "randomNumberTool",
+    description: "Generates a random number between the specified min and max values.",
+    schema: z.object({
+      min: z.number().describe("The minimum value (inclusive)."),
+      max: z.number().describe("The maximum value (inclusive)."),
+    }),
+  }
+);
 
-});
+
+
+
+const tracedCurrentTimeFunction = traceable(
+  async () => {
+    const now = new Date();
+    const hh = now.getHours().toString().padStart(2, '0');
+    const mm = now.getMinutes().toString().padStart(2, '0');
+    const ss = now.getSeconds().toString().padStart(2, '0');
+    return `${hh}:${mm}:${ss}`;
+  },
+  { name: "currentTime" }
+);
+
+const currentTimeTool = tool(
+  tracedCurrentTimeFunction,
+  {
+    name: "currentTime",
+    description: "Returns the current local time in HH:MM:SS format.",
+    schema: z.object({}),
+  }
+);
 
 
 
