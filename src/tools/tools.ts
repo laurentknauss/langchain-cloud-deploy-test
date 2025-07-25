@@ -2,7 +2,7 @@ import { tool } from '@langchain/core/tools';
 
 import { coinGeckoMarketTool, coinGeckoPriceTool } from './geckoTool';
 import { openWeatherMapTool } from './weatherTool';
-
+import { TavilySearch} from '@langchain/tavily';
 import { traceable } from 'langsmith/traceable';
 import { z } from 'zod';
 
@@ -40,6 +40,7 @@ const braveSearchTool = tool(tracedBraveSearchTool, {
     query: z.string().describe("Texte de recherche"),
   }),
 });
+*/
 
 
 
@@ -48,7 +49,6 @@ const braveSearchTool = tool(tracedBraveSearchTool, {
 
 
 
-/*
 // Define the Tavily search tool
 const apiKey = process.env.TAVILY_API_KEY;
 
@@ -58,7 +58,7 @@ if (!apiKey) {
 
 const tavily = new TavilySearch({
   tavilyApiKey: apiKey,
-  maxResults: Math.max(1, Math.min(10, 3)), // Ensure maxResults is within a reasonable range
+  maxResults: 3, // Ensure maxResults is within a reasonable range
 });
 
 
@@ -66,7 +66,7 @@ const tavily = new TavilySearch({
 
 
 // 2. Création d’une fonction tracée qui appelle tavily.invoke()
-const tracedTavilytool = traceable(
+const tracedTavilyTool = traceable(
   async ({ query }: { query: string }) => {
     return await tavily.invoke({ query});
   },
@@ -78,7 +78,7 @@ const tracedTavilytool = traceable(
 
 
 // 🛠️ 4. Expose la fonction comme un tool LangChain si souhaité
-const tavilyTool = tool(tracedTavilytool, {
+const tavilyTool = tool(tracedTavilyTool, {
   name: "tavilySearch",
   description: "Recherche web via Tavily",
   schema: z.object({
@@ -86,7 +86,7 @@ const tavilyTool = tool(tracedTavilytool, {
   }),
 });
 
-*/
+
 
 const tracedAdditionFunction = traceable(
   async ({ a, b }: { a: number; b: number }) => {
@@ -172,5 +172,6 @@ export const ALL_TOOLS_LIST = [
   coinGeckoMarketTool,
   additionTool,
   randomNumberTool,
-  currentTimeTool
+  currentTimeTool,
+  tavilyTool
 ]
