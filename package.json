@@ -32,7 +32,7 @@
     "node-fetch": "^3.3.2",
     "pdf-parse": "^1.1.1",
     "tslint": "^5.20.1",
-    "zod": "^3.25.67"
+    "zod": "3.25.67"
   },
   "files": [
     "./bin/*",
@@ -48,6 +48,10 @@
     "typescript": "^5.8.3"
   },
   "resolutions": {
-    "@langchain/core": "^0.3.61"
+    "@langchain/core": "^0.3.61",
+    "zod": "3.25.67"
+  },
+  "overrides": {
+    "zod": "3.25.67"
   }
 }
